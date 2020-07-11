@@ -4,10 +4,36 @@ const BlockAuthService = require('../services/blockAuthService');
 
 router.get('/key', (req, res) => {
 
-    console.log('Username: ' + req.body.username);
     BlockAuthService.getBlockAuthPublicKey(req.body.username).then(data => {
 
         res.send({message: data.message, data: data.data});
+
+    }).catch(error => {
+
+       res.send({message: error.message});
+    });
+
+});
+
+router.get('/url', (req, res) => {
+
+    BlockAuthService.getBlockAuthUrl(req.body.username).then(data => {
+
+        res.send({message: data.message, data: data.data});
+
+    }).catch(error => {
+
+       res.send({message: error.message});
+    });
+
+});
+
+router.get('/address', (req, res) => {
+
+    BlockAuthService.getAddress(req.body.username).then(data => {
+
+        res.send({message: data.message, data: data.data});
+
     }).catch(error => {
 
        res.send({message: error.message});

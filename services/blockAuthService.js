@@ -16,15 +16,50 @@ const BlockAuthService = function() {
             contract.getBlockAuthPublicKey(username, function(error, response){
 
                 if(error){
-                    console.log(error);
                     reject({status: 500, message: 'Error - ' + error});
                 }
                 else{
-                    resolve({status: 200, message: 'Success', data: response});
+                    resolve({status: 200, message: 'Public key received', data: response});
                 }
             });
+            
         });
-    }
+    };
+
+    this.getBlockAuthUrl = (username) => {
+
+        return new Promise((resolve, reject) => {
+
+            contract.getBlockAuthUrl(username, function(error, response){
+
+                if(error){
+                    reject({status: 500, message: 'Error - ' + error});
+                }
+                else{
+                    resolve({status: 200, message: 'User url received', data: response});
+                }
+            });
+            
+        });
+    };
+
+    this.getAddress = (username) => {
+
+        return new Promise((resolve, reject) => {
+
+            contract.getAddress(username, function(error, response){
+
+                if(error){
+                    reject({status: 500, message: 'Error - ' + error});
+                }
+                else{
+                    resolve({status: 200, message: 'User address received', data: response});
+                }
+            });
+            
+        });
+    };
+
     
 };
 
