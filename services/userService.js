@@ -16,7 +16,12 @@ const UserService = function() {
 
             newUser.save().then(() => {
 
-                resolve({status: 200, message: 'New user created successfully', data: newUser});
+                const newUserCopy = {
+                    publicKey: newUser.publicKey,
+                    url: newUser.url
+                }
+
+                resolve({status: 200, message: 'New user created successfully', data: newUserCopy});
 
             }).catch(error => {
 
