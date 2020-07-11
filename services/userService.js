@@ -42,29 +42,36 @@ const UserService = function() {
 
                     UserModel.User.findOne({publicKey: userData.publicKey}).then(currentUser => {
 
-                        console.log('Current user -- ' + currentUser._id);
-                        const newUser = {
-                            privateKey: currentUser.privateKey,
-                            publicKey: currentUser.publicKey,
-                            url: currentUser.url,
-                            username: userData.username,
-                            password: userData.password
-                        }
-        
-                        UserModel.User.findByIdAndUpdate(currentUser._id, newUser).then(() => {
-        
-                            UserModel.User.findById(currentUser._id).then(data => {
-        
-                                resolve({status: 200, message: 'User data updated succesfully', data: ''});
-                            }).catch(error => {
+                        if (currentUser == null){
 
+                            reject({status: 500, message: 'Error - Invalid public key.'});
+                        }
+                        else{
+
+                            const newUser = {
+                                privateKey: currentUser.privateKey,
+                                publicKey: currentUser.publicKey,
+                                url: currentUser.url,
+                                username: userData.username,
+                                password: userData.password
+                            }
+        
+                            UserModel.User.findByIdAndUpdate(currentUser._id, newUser).then(() => {
+            
+                                UserModel.User.findById(currentUser._id).then(data => {
+            
+                                    resolve({status: 200, message: 'User data updated succesfully', data: ''});
+
+                                }).catch(error => {
+
+                                    reject({status: 500, message: 'Error - ' + error});
+                                });
+                            }).catch(error => {
+            
                                 reject({status: 500, message: 'Error - ' + error});
                             });
-                        }).catch(error => {
-        
-                            reject({status: 500, message: 'Error - ' + error});
-                        });
-        
+                        }
+            
         
                     }).catch(error => {
         

@@ -2,10 +2,8 @@ const express =  require('express');
 const router = express.Router();
 const UserService = require('../services/userService');
 
-
+//Endpoint for adding new user
 router.post('/', (req, res) => {
-
-    console.log(req.body);
 
     user = {
         username: req.body.username,
@@ -16,9 +14,11 @@ router.post('/', (req, res) => {
     UserService.updateUsernameAndPassword(user).then(data => {
 
         res.status(data.status).send({message: data.message, data: data.data});
+
     }).catch(error => {
 
         res.status(error.status).send({message: error.message});
+
     });
 
 })
