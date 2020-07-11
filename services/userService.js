@@ -40,8 +40,9 @@ const UserService = function() {
 
                 if (user == null){
 
-                    UserModel.User.find({publicKey:userData.publicKey}).then(currentUser => {
+                    UserModel.User.findOne({publicKey: userData.publicKey}).then(currentUser => {
 
+                        console.log('Current user -- ' + currentUser._id);
                         const newUser = {
                             privateKey: currentUser.privateKey,
                             publicKey: currentUser.publicKey,
@@ -56,7 +57,7 @@ const UserService = function() {
         
                                 resolve({status: 200, message: 'User data updated succesfully', data: ''});
                             }).catch(error => {
-                                
+
                                 reject({status: 500, message: 'Error - ' + error});
                             });
                         }).catch(error => {
