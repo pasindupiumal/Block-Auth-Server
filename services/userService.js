@@ -30,6 +30,59 @@ const UserService = function() {
 
             
         })
+    };
+
+    this.updateUsernameAndPassword = (userData) => {
+
+        return new Promise((resolve, reject) => {
+
+            UserModel.User.findOne({username: userData.username}).then(user => {
+
+                if (user == null){
+
+                    UserModel.User.find({publicKey:userData.publicKey}).then(currentUser => {
+
+                        const newUser = {
+                            privateKey: currentUser.privateKey,
+                            publicKey: currentUser.publicKey,
+                            url: currentUser.url,
+                            username: userData.username,
+                            password: userData.password
+                        }
+        
+                        UserModel.User.findByIdAndUpdate(currentUser._id, newUser).then(() => {
+        
+                            UserModel.User.findById(currentUser._id).then(data => {
+        
+                                resolve({status: 200, message: 'User data updated succesfully', data: ''});
+                            }).catch(error => {
+                                
+                                reject({status: 500, message: 'Error - ' + error});
+                            });
+                        }).catch(error => {
+        
+                            reject({status: 500, message: 'Error - ' + error});
+                        });
+        
+        
+                    }).catch(error => {
+        
+                        reject({status: 500, message: 'Error - ' + error});
+                    });
+                    
+                }
+                else{
+
+                    reject({status: 500, message: 'Error - Username already taken.'});
+                }
+                
+            }).catch(error => {
+
+                reject({status: 500, message: 'Error - ' + error});
+            });
+
+            
+        })
     }
 }
 
