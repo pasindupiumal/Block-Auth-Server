@@ -11,6 +11,8 @@ router.get('/', (req, res) => {
 
     }).catch(error => {
 
-        res.status(error.status).send({message: error.message});
+       res.status(error.status).send({message: error.message});
     });
 })
+
+module.exports = router;

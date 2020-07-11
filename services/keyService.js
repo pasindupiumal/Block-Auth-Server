@@ -6,7 +6,7 @@ const UserService = require('./userService');
 
 const BASE_URL = config.BASE_URL;
 
-const KeyService = () => {
+const KeyService = function() {
 
     this.newKeys = () => {
 
@@ -19,7 +19,7 @@ const KeyService = () => {
             console.log('RSA public key generated');
 
             //Get the user specific url
-            const userURL = BASE_URL + "authentication/" + crypto.createHash('sha256').update(rsaPublicKey).digest('base64').substr(0, 8);
+            const userURL = BASE_URL + "/authentication/" + crypto.createHash('sha256').update(rsaPublicKey).digest('base64').substr(0, 8);
 
             const newUser = {
                 publicKey: rsaPublicKey,
@@ -28,12 +28,12 @@ const KeyService = () => {
             };
 
             //Add new user
-            UserService.newUser(newUser).then(data => {
+            UserService.addUser(newUser).then(data => {
 
-                resolve({status: 200, message: 'New set of keys generated succesfully', data: data});
+                resolve({status: data.status, message: 'New set of keys generated succesfully', data: data.data});
             }).catch(error => {
 
-                reject({status: 500, message: 'Error - ' + error});
+                reject({status: error.status, message: 'Error - ' + error});
             });
 
 
