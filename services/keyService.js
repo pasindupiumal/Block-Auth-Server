@@ -1,6 +1,9 @@
 const cryptico = require('cryptico');
 const crypto = require('crypto');
 const config = require('../config');
+const UserService = require('./userService');
+
+
 const BASE_URL = config.BASE_URL;
 
 const KeyService = () => {
@@ -16,7 +19,22 @@ const KeyService = () => {
             console.log('RSA public key generated');
 
             //Get the user specific url
-            const url = BASE_URL + "authentication/" + crypto.createHash('sha256').update(rsaPublicKey).digest('base64').substr(0, 8);
+            const userURL = BASE_URL + "authentication/" + crypto.createHash('sha256').update(rsaPublicKey).digest('base64').substr(0, 8);
+
+            const newUser = {
+                publicKey: rsaPublicKey,
+                privateKey: JSON.stringify(rsaKey.toJSON()),
+                url: userURL
+            };
+
+            //Add new user
+            UserService.newUser(newUser).then(data => {
+
+                resolve({status: 200, message: 'New set of keys generated succesfully', data: data});
+            }).catch(error => {
+
+                reject({status: 500, message: 'Error - ' + error});
+            });
 
 
         })
