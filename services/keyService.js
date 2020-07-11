@@ -1,10 +1,9 @@
-const userModel = require('../models/user');
 const cryptico = require('cryptico');
 const crypto = require('crypto');
 const config = require('../config');
 const BASE_URL = config.BASE_URL;
 
-const keyService = () => {
+const KeyService = () => {
 
     this.newKeys = () => {
 
@@ -17,7 +16,12 @@ const keyService = () => {
             console.log('RSA public key generated');
 
             //Get the user specific url
-            
+            const url = BASE_URL + "authentication/" + crypto.createHash('sha256').update(rsaPublicKey).digest('base64').substr(0, 8);
+
+
         })
     }
 };
+
+
+module.exports = new KeyService();

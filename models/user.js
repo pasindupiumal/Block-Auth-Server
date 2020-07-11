@@ -17,6 +17,10 @@ const UserSchema = new Schema({
 
     privateKey: {
         type: String
+    },
+
+    url: {
+        type: String
     }
 });
 
