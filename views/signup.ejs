@@ -157,29 +157,28 @@
 
                         console.log('ANUD: ' + data);
 
-                        contract.NewUserAdded().watch(function (error, response) {
 
-                            if(error){
-                                console.log('New User Event Error: ' + error);
+                        $.get("/blockauth/username?username=" + username).then(data => {
+
+                            if (data.data == false){
+                                
+                                toastr.success("Registration successfuly");
                                 return;
+
                             }
                             else{
 
+                                toastr.error("Registration unsuccessfuly");
+                                return;
 
-                                console.log('Response from: ' + response.args.from);
-                                console.log('Response username: ' + response.args.username);
-                                console.log('Response success: ' + response.args.success);
+                            }
 
-                                if(response.args.success == true){
-                                    toastr.success("Registration successfuly");
-                                    return;
-                                }
-                                else{
-                                    toastr.error("Registration unsuccessfuly");
-                                    return;
-                                }
-                            };
+                        }).catch(erro => {
+
+                            console.log('Error determining registration status - ' + error);
                         });
+
+                        
                     }
                 });
 
