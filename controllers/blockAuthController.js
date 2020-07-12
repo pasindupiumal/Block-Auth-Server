@@ -29,7 +29,7 @@ router.get('/username', (req, res) => {
 
 });
 
-router.get('/url', (req, res) => {
+router.post('/url', (req, res) => {
 
     BlockAuthService.getBlockAuthUrl(req.body.username).then(data => {
 
