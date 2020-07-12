@@ -21,6 +21,14 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
+router.get('/authentication/:id', (req, res) => {
+
+  const username = req.query.username;
+  console.log(username);
+
+  res.render('authentication', {username: 'pasindu'});
+});
+
 
 
 module.exports = router;
