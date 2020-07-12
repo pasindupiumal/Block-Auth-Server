@@ -3,7 +3,6 @@ const crypto = require('crypto');
 const config = require('../config');
 const UserService = require('./userService');
 
-
 const BASE_URL = config.BASE_URL;
 
 const KeyService = function() {

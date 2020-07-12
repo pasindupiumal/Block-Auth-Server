@@ -4,8 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/javascripts/rollups/sha256.js"></script>
 </head>
 <body>
-    <p> Hello, World. Let's Sign Up.</p>
+    
+    <div class="form-group">
+
+        <label>Username: </label>
+        <input type="text" id="username" placeholder="Username">
+
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group">
+
+        <label>Password: </label>
+        <input type="password" id="password1" placeholder="Password">
+        
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group">
+
+        <label>Confirm Password: </label>
+        <input type="password" id="password2" placeholder="Confirm password">
+        
+    </div>
+   
+    <br/>
+    <br/>
+
+    <button id="register" onClick="signup()"> Register </button>
+
+
+    <script>
+
+        if(typeof(web3) == "undefined"){
+
+            toastr.error("Browser doesn't support Web3. Please install MetaMask to proceed");
+
+        }
+
+        const contractAddress = "<%= contractAddress %>";
+        const contractAbi = <%- JSON.stringify(abi) %>;
+        const node_address = "<%= node_address %>";
+        var publicKey = "";
+        var userUrl = "";
+
+        web3.setProvider(new web3.providers.HttpProvider("node_address"));
+        const contract = web3.eth.contract(contractAbi).at(contractAddress); 
+
+        web3.eth.getAccounts((error, accounts) => {
+                if(error){
+                    console.log(error);
+                    return;
+                }
+
+                console.log(accounts);
+                web3.eth.defaultAccount = accounts[0];
+        });
+
+        $(document).ready(function(){
+
+            $.get("/keys/").then(data => {
+
+                publicKey = data.data.publicKey;
+                userUrl = data.data.url;
+
+                console.log(publicKey);
+                console.log("\n");
+                console.log(userUrl);
+
+            }).catch(erro => {
+                console.log(error);
+            });
+        });
+
+
+
+        function signup(){
+
+            const username = $("#username").val();
+            const password1 = $("#password1").val();
+            const password2 = $("#password2").val();
+            const validUsername = /^[a-z0-9\.\_]+$/i.test( username );
+
+            var valid = true;
+
+            if( !validUsername ){
+                toastr.error("Username can have only alpha numeric characters, . and _");
+                valid = false;
+            }
+            if(password1.length < 6){
+                toastr.error("Password too weak. Must have atleast 6 characters");
+                valid = false;
+            }
+            if(password1 != password2){
+                toastr.error("Passwords don't match");
+                valid = false;
+            }
+            if(publicKey == "" || userUrl == ""){
+                valid = false;
+                toastr.error("Not yet ready. Please try after a few seconds.");
+            }
+            if( typeof(web3) == "undefined"){
+                toastr.error("Please install Metamask plugin or Mist");
+                valid = false;
+            }
+            if( typeof(web3.eth.defaultAccount) == "undefined"){
+                toastr.error("Please login into Metamask or Mist");
+                valid = false;
+            }
+            if( !valid ){
+                return;
+            }
+
+            //web3.eth.defaultAccount = web3.eth.accounts[0];
+            //web3.personal.unlockAccount(web3.eth.defaultAccount);
+
+            var password = CryptoJS.SHA256(password1).toString();
+
+            const setData = contract.addNewUser(username, userUrl, publicKey, function(error, data) {
+                if(!error){
+                    console.log(data);
+
+                }
+                else{
+                    console.log(error);
+                }
+            });
+            
+            console.log(setData);
+            
+        }
+
+    </script>
+
 </body>
 </html>
