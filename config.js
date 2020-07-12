@@ -1,6 +1,6 @@
 module.exports.BASE_URL = "https://localhost:8080";
 module.exports.ETHEREUM_NODE_ADDRESS = "http://127.0.0.1:7545"
-module.exports.CONTRACT_ADDRESS = "0xE7756E18DB3AC5D66147Cb464D6e30917DA78613";
+module.exports.CONTRACT_ADDRESS = "0x90bd0911bb993976D27d8d2238bd79dfb45B95C3";
 module.exports.ABI = [
         {
           "inputs": [],

@@ -41,4 +41,23 @@ router.get('/address', (req, res) => {
 
 });
 
+router.post('/user', (req, res) => {
+
+    userData = {
+        username: req.body.username,
+        block_auth_url: req.body.url,
+        public_key: req.body.publicKey
+    }
+
+    BlockAuthService.addNewUser(userData).then(data => {
+
+        res.send({message: data.message, data: data.data});
+
+    }).catch(error => {
+
+        res.send({message: error.message});
+    });
+
+});
+
 module.exports = router;

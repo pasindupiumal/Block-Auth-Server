@@ -9,6 +9,26 @@ var contract = web3.eth.contract(ABI).at(CONTRACT_ADDRESS);
 
 const BlockAuthService = function() {
 
+
+    this.addNewUser = (userData) => {
+
+        console.log(userData);
+
+        return new Promise((resolve, reject) => {
+
+            contract.addNewUser(userData.username, userData.block_auth_url, userData.public_key, function(error, response){
+
+                if(error){
+                    reject({status: 500, message: 'Error - ' + error});
+                }
+                else{
+                    resolve({status: 200, message: 'User data added to blockchain', data: response});
+                }
+            });
+            
+        });
+    };
+
     this.getBlockAuthPublicKey = (username) => {
 
         return new Promise((resolve, reject) => {
