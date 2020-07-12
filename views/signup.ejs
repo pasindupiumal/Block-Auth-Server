@@ -125,15 +125,65 @@
             //Check username availability status
             $.get("/blockauth/username?username=" + username).then(data => {
 
-                console.log('Data recieved: ' + data.data);
-                usernameFromChain = data;
+                usernameFromChain = data.data;
+
+                if (usernameFromChain == true){
+                    
+                    addUser();
+
+                }
+                else{
+                    toastr.error("Username already taken");
+                    return;
+
+                }
 
                 }).catch(erro => {
 
                     console.log('Error retrieving keys - ' + error);
             });
 
-            console.log(usernameFromChain);
+            function addUser(){
+
+                var password = CryptoJS.SHA256(password1).toString();
+
+                const setData = contract.addNewUser(username, userUrl, publicKey, function(error, data) {
+
+                    if(error){
+                        console.log('Add New User Error: ' + error);
+                        return;
+                    }
+                    else{
+
+                        console.log('ANUD: ' + data);
+
+                        contract.NewUserAdded().watch(function (error, response) {
+
+                            if(error){
+                                console.log('New User Event Error: ' + error);
+                                return;
+                            }
+                            else{
+
+
+                                console.log('Response from: ' + response.args.from);
+                                console.log('Response username: ' + response.args.username);
+                                console.log('Response success: ' + response.args.success);
+
+                                if(response.args.success == true){
+                                    toastr.success("Registration successfuly");
+                                    return;
+                                }
+                                else{
+                                    toastr.error("Registration unsuccessfuly");
+                                    return;
+                                }
+                            };
+                        });
+                    }
+                });
+
+            }
 
             
         };
