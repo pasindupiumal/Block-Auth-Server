@@ -15,6 +15,19 @@ router.get('/key', (req, res) => {
 
 });
 
+router.get('/username', (req, res) => {
+
+    BlockAuthService.usernameAvailable(req.body.username).then(data => {
+
+        res.status(data.status).send({message: data.message, data: data.data});
+
+    }).catch(error => {
+
+        res.status(error.status).send({message: error.message});
+    });
+
+});
+
 router.get('/url', (req, res) => {
 
     BlockAuthService.getBlockAuthUrl(req.body.username).then(data => {

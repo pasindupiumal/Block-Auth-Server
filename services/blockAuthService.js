@@ -46,6 +46,25 @@ const BlockAuthService = function() {
         });
     };
 
+
+
+    this.usernameAvailable = (username) => {
+
+        return new Promise((resolve, reject) => {
+
+            contract.usernameAvailable(username, function(error, response){
+
+                if(error){
+                    reject({status: 500, message: 'Error - ' + error});
+                }
+                else{
+                    resolve({status: 200, message: 'Username availability status received', data: response});
+                }
+            });
+            
+        });
+    };
+
     this.getBlockAuthUrl = (username) => {
 
         return new Promise((resolve, reject) => {

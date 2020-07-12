@@ -12,41 +12,35 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/javascripts/rollups/sha256.js"></script>
+
+
 </head>
 <body>
-    
-    <div class="form-group">
+
+    <form onSubmit="signup()">
 
         <label>Username: </label>
         <input type="text" id="username" placeholder="Username">
 
-    </div>
-
-    <br/>
-    <br/>
-
-    <div class="form-group">
+        <br/>
+        <br/>
 
         <label>Password: </label>
         <input type="password" id="password1" placeholder="Password">
-        
-    </div>
 
-    <br/>
-    <br/>
-
-    <div class="form-group">
+        <br/>
+        <br/>
 
         <label>Confirm Password: </label>
         <input type="password" id="password2" placeholder="Confirm password">
-        
-    </div>
-   
-    <br/>
-    <br/>
 
-    <button id="register" onClick="signup()"> Register </button>
+        <br/>
+        <br/>
 
+        <button id="register" type="submit"> Register </button>
+
+    </form>
+    
 
     <script>
 
@@ -66,6 +60,7 @@
         const contract = web3.eth.contract(contractAbi).at(contractAddress); 
 
         web3.eth.getAccounts((error, accounts) => {
+            
                 if(error){
                     console.log(error);
                     return;
@@ -139,39 +134,45 @@
                 }
                 else{
                     console.log('ANUD: ' + data);
-                    console.log('Got data: ' + setData);
-
-
-                    contract.NewUserAdded().watch(function (error, response) {
-
-                        if(error){
-                            console.log('New User Event Error: ' + error);
-                        }
-                        else{
-
-                            console.log('Response from: ' + response.args.from);
-                            console.log('Response username: ' + response.args.username);
-                            console.log('Response success: ' + response.args.success);
-
-
-                            if(response.args.success == false){
-                                toastr.error("Username already taken");
-                                return;
-                            }
-                            else if(response.args.success == true){
-                                toastr.success("Registration successfuly");
-
-                                location.reload();
-                            }
-                        }
-                    });
                 }
 
             });
             
-            
+            console.log('Got data: ' + setData);
 
-            
+            web3.eth.estimateGas({to: contract.address, data:setData}, function(error, gasEstimate){
+
+                if(error){
+                    console.log('Gas Estimation Error: ' + error);
+                    return;
+                }
+                else{
+                    console.log('Gas Estimate: ' + gasEstimate);
+
+                    web3.eth.sendTransaction({to: contract.address, data: setData, gas: gasEstimate}, function(error, data) {
+
+                        if(error){
+                            console.log(error);
+                        }
+                        else if(typeof(data) == 'undefined'){
+                            toastr.error('Error. Registration Aborted');
+                        }
+                        else{
+                            console.log('Transaction hash: ' + data);
+                            contract.NewUserAdded().watch(function (error, response) {
+
+                                if(response.args.success == false){
+                                    toastr.error("Username already taken");
+                                    return;
+                                }
+                                else{
+                                    toastr.success("Registration successfuly");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
             
         };
 
