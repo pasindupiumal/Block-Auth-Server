@@ -53,6 +53,7 @@ const BlockAuthService = function() {
         return new Promise((resolve, reject) => {
 
             contract.usernameAvailable(username, function(error, response){
+                console.log('Username check ' + response);
 
                 if(error){
                     reject({status: 500, message: 'Error - ' + error});

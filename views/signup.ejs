@@ -17,7 +17,7 @@
 </head>
 <body>
 
-    <form onSubmit="signup()">
+    <form onSubmit="signup(); return false;">
 
         <label>Username: </label>
         <input type="text" id="username" placeholder="Username">
@@ -60,7 +60,7 @@
         const contract = web3.eth.contract(contractAbi).at(contractAddress); 
 
         web3.eth.getAccounts((error, accounts) => {
-            
+
                 if(error){
                     console.log(error);
                     return;
@@ -82,10 +82,9 @@
                 console.log(userUrl);
 
             }).catch(erro => {
-                console.log(error);
+                console.log('Error retrieving keys - ' + error);
             });
         });
-
 
 
         function signup(){
@@ -101,10 +100,6 @@
                 toastr.error("Username can have only alpha numeric characters, . and _");
                 valid = false;
             }
-            if(password1.length < 6){
-                toastr.error("Password too weak. Must have atleast 6 characters");
-                valid = false;
-            }
             if(password1 != password2){
                 toastr.error("Passwords don't match");
                 valid = false;
@@ -114,65 +109,32 @@
                 toastr.error("Not yet ready. Please try after a few seconds.");
             }
             if( typeof(web3) == "undefined"){
-                toastr.error("Please install Metamask plugin or Mist");
+                toastr.error("Please install Metamask");
                 valid = false;
             }
             if( typeof(web3.eth.defaultAccount) == "undefined"){
-                toastr.error("Please login into Metamask or first");
+                toastr.error("Please login into Metamask");
                 valid = false;
             }
             if( !valid ){
                 return;
             }
 
-            var password = CryptoJS.SHA256(password1).toString();
+            var usernameFromChain = "";
 
-            const setData = contract.addNewUser(username, userUrl, publicKey, function(error, data) {
-                
-                if(error){
-                    console.log('Add New User Error: ' + error);
-                }
-                else{
-                    console.log('ANUD: ' + data);
-                }
+            //Check username availability status
+            $.get("/blockauth/username?username=" + username).then(data => {
 
+                console.log('Data recieved: ' + data.data);
+                usernameFromChain = data;
+
+                }).catch(erro => {
+
+                    console.log('Error retrieving keys - ' + error);
             });
-            
-            console.log('Got data: ' + setData);
 
-            web3.eth.estimateGas({to: contract.address, data:setData}, function(error, gasEstimate){
+            console.log(usernameFromChain);
 
-                if(error){
-                    console.log('Gas Estimation Error: ' + error);
-                    return;
-                }
-                else{
-                    console.log('Gas Estimate: ' + gasEstimate);
-
-                    web3.eth.sendTransaction({to: contract.address, data: setData, gas: gasEstimate}, function(error, data) {
-
-                        if(error){
-                            console.log(error);
-                        }
-                        else if(typeof(data) == 'undefined'){
-                            toastr.error('Error. Registration Aborted');
-                        }
-                        else{
-                            console.log('Transaction hash: ' + data);
-                            contract.NewUserAdded().watch(function (error, response) {
-
-                                if(response.args.success == false){
-                                    toastr.error("Username already taken");
-                                    return;
-                                }
-                                else{
-                                    toastr.success("Registration successfuly");
-                                }
-                            });
-                        }
-                    });
-                }
-            });
             
         };
 
