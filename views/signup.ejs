@@ -123,31 +123,57 @@
                 valid = false;
             }
             if( typeof(web3.eth.defaultAccount) == "undefined"){
-                toastr.error("Please login into Metamask or Mist");
+                toastr.error("Please login into Metamask or first");
                 valid = false;
             }
             if( !valid ){
                 return;
             }
 
-            //web3.eth.defaultAccount = web3.eth.accounts[0];
-            //web3.personal.unlockAccount(web3.eth.defaultAccount);
-
             var password = CryptoJS.SHA256(password1).toString();
 
             const setData = contract.addNewUser(username, userUrl, publicKey, function(error, data) {
-                if(!error){
-                    console.log(data);
-
+                
+                if(error){
+                    console.log('Add New User Error: ' + error);
                 }
                 else{
-                    console.log(error);
+                    console.log('ANUD: ' + data);
+                    console.log('Got data: ' + setData);
+
+
+                    contract.NewUserAdded().watch(function (error, response) {
+
+                        if(error){
+                            console.log('New User Event Error: ' + error);
+                        }
+                        else{
+
+                            console.log('Response from: ' + response.args.from);
+                            console.log('Response username: ' + response.args.username);
+                            console.log('Response success: ' + response.args.success);
+
+
+                            if(response.args.success == false){
+                                toastr.error("Username already taken");
+                                return;
+                            }
+                            else if(response.args.success == true){
+                                toastr.success("Registration successfuly");
+
+                                location.reload();
+                            }
+                        }
+                    });
                 }
+
             });
             
-            console.log(setData);
             
-        }
+
+            
+            
+        };
 
     </script>
 
