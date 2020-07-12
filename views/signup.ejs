@@ -161,9 +161,20 @@
                         $.get("/blockauth/username?username=" + username).then(data => {
 
                             if (data.data == false){
+
+                                $.post('/users/', {username: username, password: password, publicKey: publicKey}).then( response => {
+                                    
+                                    toastr.success("Registration successfuly");
+                                    return;
+
+                                }).catch(error =>{ 
+
+                                    console.log('Database operation failed - ' + error);
+                                    toastr.error("Registration unsuccessfuly");
+                                    return;
+                                });
                                 
-                                toastr.success("Registration successfuly");
-                                return;
+                                
 
                             }
                             else{
