@@ -27,7 +27,7 @@
             function login(){
 
                 const url = new URL(window.location.href);
-                const redirect = "www.google.com";
+                const redirect = "http://localhost:3000/verify/";
 
                 if(!redirect){
                     toastr.error('Invalid login. Redirect url not available');

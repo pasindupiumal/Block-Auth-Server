@@ -32,6 +32,29 @@ const UserService = function() {
         })
     };
 
+    this.findUserByUsername = (username) => {
+
+        return new Promise((resolve, reject) => {
+
+            UserModel.User.findOne({username: username}).then(user => {
+
+                if(user == null){
+                    reject({status: 500, message: 'User not found'});
+                }
+                else{
+
+                    resolve({status: 200, message: 'User retrieved', data: user});
+                }
+
+
+            }).catch(error => {
+
+                reject({status: 500, message: 'Error - ' + error});
+            });
+        });
+
+    }
+
     this.updateUsernameAndPassword = (userData) => {
 
         return new Promise((resolve, reject) => {
@@ -90,7 +113,7 @@ const UserService = function() {
             });
 
             
-        })
+        });
     }
 }
 

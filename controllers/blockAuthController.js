@@ -2,7 +2,7 @@ const express =  require('express');
 const router = express.Router();
 const BlockAuthService = require('../services/blockAuthService');
 
-router.get('/key', (req, res) => {
+router.post('/key', (req, res) => {
 
     BlockAuthService.getBlockAuthPublicKey(req.body.username).then(data => {
 
@@ -42,7 +42,7 @@ router.post('/url', (req, res) => {
 
 });
 
-router.get('/address', (req, res) => {
+router.post('/address', (req, res) => {
 
     BlockAuthService.getAddress(req.body.username).then(data => {
 

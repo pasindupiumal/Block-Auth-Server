@@ -6,6 +6,7 @@ const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 const ABI = config.ABI;
 const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_NODE_ADDRESS));
 var contract = web3.eth.contract(ABI).at(CONTRACT_ADDRESS);
+const UserService = require('../services/userService');
 
 const BlockAuthService = function() {
 
@@ -45,6 +46,27 @@ const BlockAuthService = function() {
             
         });
     };
+
+
+    this.verify = (username, code, hashCode, cipher) => {
+
+        return new Promise((resolve, reject) => {
+
+
+
+            contract.getBlockAuthPublicKey(username, function(error, response){
+
+                if(error){
+                    reject({status: 500, message: 'Error - ' + error});
+                }
+                else{
+                    resolve({status: 200, message: 'Public key received', data: response});
+                }
+            });
+            
+        });
+    };
+
 
 
 

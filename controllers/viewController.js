@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const config = require('../config');
 const BlockAuthService = require('../services/blockAuthService');
+const VerifierService = require('../services/verifierService');
 
 const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 const ABI = config.ABI;
@@ -70,6 +71,28 @@ router.get('/authentication/:id', (req, res) => {
     return;
 
   });
+
+});
+
+router.get('/verify', (req, res) => {
+
+  const username = req.query.username;
+  const code = req.query.code;
+  const hashCode = req.query.hashcode;
+
+  console.log('Username: ' + username);
+  console.log(' Code: ' + code);
+  console.log('Hash code: ' + hashCode);
+
+  VerifierService.verifyUser(username, code, hashCode).then(data => {
+
+    res.send({message: data.message, data:data.data});
+
+  }).catch(error => {
+
+    res.send({message: error.message});
+  })
+
 
 });
 

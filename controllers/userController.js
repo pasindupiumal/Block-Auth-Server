@@ -21,6 +21,23 @@ router.post('/', (req, res) => {
 
     });
 
-})
+});
+
+/*router.post('/userData', (req, res) => {
+
+    
+
+    UserService.findUserByUsername(req.body.username).then(data => {
+
+        res.status(data.status).send({message: data.message, data: data.data});
+
+    }).catch(error => {
+
+        res.status(error.status).send({message: error.message});
+
+    });
+
+}); */
+
 
 module.exports = router;

@@ -16,7 +16,7 @@
 
     <body>
 
-        <form onSubmit="authenticate(); return false;">
+        <form>
             <br/>
             <label> Username: </label>
             <input type="text" placeholder="Username" id="username" value="<%= username %>" readonly/>
@@ -30,7 +30,7 @@
             <br/>
             <br/>
         
-            <button type="submit">Login</button>
+            <button onClick="authenticate(); return false;"">Login</button>
         </form>
     
 	    <script>
@@ -40,7 +40,8 @@
                 const username = "<%= username %>";
                 const password = $("#password").val();
                 const url = new URL(window.location.href);
-                const reidrect = url.serachParams.get("redirect");
+                const redirect = url.searchParams.get("redirect");
+                console.log('Redirect link: ' + redirect);
                 const code = Math.ceil(Math.random() * 1000);
 
                 const token = CryptoJS.SHA256(code.toString()+CryptoJS.SHA256(password).toString()).toString();
