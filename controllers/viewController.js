@@ -36,7 +36,7 @@ router.get('/authentication/:id', (req, res) => {
     if(data.data == true){
 
       console.log('Invalid username');
-      res.render('authentication', {username: undefined});
+      res.render('authentication', {username: 'Invalid username'});
       return;
     }
     else{
@@ -50,7 +50,7 @@ router.get('/authentication/:id', (req, res) => {
         }
         else{
 
-          res.render('authentication', {username: undefined});
+          res.render('authentication', {username: 'Invalid username'});
         }
 
       }).catch(error => {
