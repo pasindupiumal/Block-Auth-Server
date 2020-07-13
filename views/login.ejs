@@ -1,66 +1,62 @@
 <html>
-    <head>
+<head>
 
-	<title> Sign In </title>
+    <title> Sign In </title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-     
-    </head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    
+</head>
 
 
-    <body>
+<body>
 
-        <form onSubmit="login(); return false;">
-            <br/>
-            <label> Username: </label>
-            <input type="text" placeholder="Username" id="username"/>
-        
-            <button type="submit">Login</button>
-        </form>
+    <form onSubmit="login(); return false;">
+        <br/>
+        <label> Username: </label>
+        <input type="text" placeholder="Username" id="username"/>
+    
+        <button type="submit">Login</button>
+    </form>
 
-        <script>
+    <script>
 
-            function login(){
+        function login(){
 
-                const url = new URL(window.location.href);
-                const redirect = "http://localhost:3000/verify/";
+            const url = new URL(window.location.href);
+            const redirect = "http://localhost:3000/verify/";
 
-                if(!redirect){
-                    toastr.error('Invalid login. Redirect url not available');
-                    return;
-                }
-                else{
-                    const username = $("#username").val();
+            if(!redirect){
+                toastr.error('Invalid login. Redirect url not available');
+                return;
+            }
+            else{
+                const username = $("#username").val();
 
-                    $.post('/blockauth/url', {username: username}).then(data => {
+                $.post('/blockauth/url', {username: username}).then(data => {
 
-                        if(!data.data){
-                            toastr.error("Username is not registered");
-                            return;
-                        }
-                        else{
+                    if(!data.data){
+                        toastr.error("Username is not registered");
+                        return;
+                    }
+                    else{
 
-                            console.log(data.data);
-                            window.location.href = data.data + "?redirect=" + redirect + "&action=login&username=" + username;
-                        }
+                        console.log(data.data);
+                        window.location.href = data.data + "?redirect=" + redirect + "&action=login&username=" + username;
+                    }
 
-                    }).catch(error => {
+                }).catch(error => {
 
-                        console.log('Error retrieving user url: ' + error);
-                    });
-                }
-
-
+                    console.log('Error retrieving user url: ' + error);
+                });
             }
 
 
-        </script>
-    </body>
+        }
 
 
-    
-
+    </script>
+</body>
 
 </html>
