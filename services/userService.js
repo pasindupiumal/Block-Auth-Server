@@ -1,4 +1,6 @@
 const UserModel = require('../models/user');
+const crypto = require('crypto');
+const cryptico = require('cryptico');
 
 const UserService = function() {
 
@@ -115,6 +117,47 @@ const UserService = function() {
             
         });
     }
+
+    this.authenticateUser = (username, code, hashCode, cipher) => {
+
+        return new Promise((resolve, reject) => {
+
+
+            this.findUserByUsername(username).then(data => {
+
+                
+                const expectedHashCode = crypto.createHash('sha256').update(code + data.data.password).digest('hex');
+
+                if(expectedHashCode != hashCode ){
+
+                    reject({status: 500, message: 'Authentication failed. Hash comparison failed'});
+                
+                }else{
+                    
+                    const privateKey = data.data.privateKey;
+                    var privateKeyTemp = cryptico.RSAKey();
+                    var privateKeyTemp = cryptico.RSAKey.parse(privateKey);
+
+                    const decrypted = cryptico.decrypt(cipher, privateKeyTemp);
+
+                    if(decrypted.status == "success"){
+
+                        resolve({status: 200, message: 'Authentication successful', data: decrypted.plaintext});
+                    }
+                    else{
+                        reject({status: 500, message: 'Authentication successful. Decryption unsuccessful'});
+                    }
+                }
+
+
+            }).catch(error => {
+
+                console.log('Error retrieving user data ' + error);
+                reject({status: 500, message: 'Error retrieving user data - ' + error});
+            });
+            
+        });
+    };
 }
 
 module.exports = new UserService();

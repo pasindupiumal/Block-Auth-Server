@@ -3,6 +3,7 @@ const router = express.Router();
 const config = require('../config');
 const BlockAuthService = require('../services/blockAuthService');
 const VerifierService = require('../services/verifierService');
+const UserService = require('../services/userService');
 
 const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 const ABI = config.ABI;
@@ -109,7 +110,7 @@ router.post('/authentication/:id/verify', (req, res) => {
   const hashCode = req.body.hashCode;
   const cipher = req.body.cipher;
 
-  BlockAuthService.verify(username, code, hashCode, cipher).then(data => {
+  UserService.authenticateUser(username, code, hashCode, cipher).then(data => {
 
     res.send({message: data.message, data:data.data});
 

@@ -38,11 +38,11 @@ const VerifierService = function() {
                     axios.post(userURL + '/verify', {username: username, code: code, hashCode: hashCode, cipher: encrypted}).then(data => {
 
                         if(data.data.data == tokenRaw){
-                            console.log("Authentication successfull last");
+                            console.log("Authentication successfull. Token validation successful");
                             resolve({status: 200, message: 'Authentication successful', data: ''});
                         }
                         else{
-                            console.log("Authentication unsuccessful last");
+                            console.log("Authentication unsuccessful. Token validation failed");
                             reject({status: 500, message: 'Error - Authentication failed. Token validation mismatch'});
                         }
 
