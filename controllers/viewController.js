@@ -89,14 +89,16 @@ router.get('/verify', (req, res) => {
 
     if(data.message == 'Authentication successful'){
       console.log('Login success');
+      res.send('Login Successful');
     }
     else{
-      console.log('Login failed');
+      res.send('Login Unsuccessful');
     }
 
   }).catch(error => {
 
     res.send({message: error.message});
+  
   })
 
 
