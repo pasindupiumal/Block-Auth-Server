@@ -86,7 +86,12 @@ router.get('/verify', (req, res) => {
 
   VerifierService.verifyUser(username, code, hashCode).then(data => {
 
-    res.send({message: data.message, data:data.data});
+    if(data.message == 'Authentication successful'){
+      console.log('Login success');
+    }
+    else{
+      console.log('Login failed');
+    }
 
   }).catch(error => {
 

@@ -37,13 +37,13 @@ const VerifierService = function() {
 
                     axios.post(userURL + '/verify', {username: username, code: code, hashCode: hashCode, cipher: encrypted}).then(data => {
 
-                        if(data.data == tokenRaw){
+                        if(data.data.data == tokenRaw){
                             console.log("Authentication successfull last");
-                            return;
+                            resolve({status: 200, message: 'Authentication successful', data: ''});
                         }
                         else{
                             console.log("Authentication unsuccessful last");
-                            return;
+                            reject({status: 500, message: 'Error - Authentication failed. Token validation mismatch'});
                         }
 
 
@@ -60,8 +60,6 @@ const VerifierService = function() {
 
                 });
 
-
-                resolve({status: 200, message: 'Got the keys', data: userURL});
 
            }).catch(error => {
 
