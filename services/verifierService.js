@@ -35,6 +35,24 @@ const VerifierService = function() {
                     const tokenRaw = crypto.createHash('sha256').update(Math.random().toString()).digest('base64').substr(0,10);
                     const encrypted = cryptico.encrypt(tokenRaw, userKey, "").cipher;
 
+                    axios.post(userURL + '/verify', {username: username, code: code, hashCode: hashCode, cipher: encrypted}).then(data => {
+
+                        if(data.data == tokenRaw){
+                            console.log("Authentication successfull last");
+                            return;
+                        }
+                        else{
+                            console.log("Authentication unsuccessful last");
+                            return;
+                        }
+
+
+                    }).catch(error => {
+
+                        console.log('Error - Authentication failed - ' + error );
+                        reject({status: 500, message: 'Error - Authentication failed - ' + error});
+                    });
+
                 }).catch(error => {
 
                     console.log('Error getting user key ' + error);

@@ -96,6 +96,26 @@ router.get('/verify', (req, res) => {
 
 });
 
+router.post('/authentication/:id/verify', (req, res) => {
+
+
+  const username = req.body.username;
+  const code = req.body.code;
+  const hashCode = req.body.hashCode;
+  const cipher = req.body.cipher;
+
+  BlockAuthService.verify(username, code, hashCode, cipher).then(data => {
+
+    res.send({message: data.message, data:data.data});
+
+  }).catch(error => {
+
+    res.send({message: error.message});
+
+  })
+
+});
+
 
 
 module.exports = router;

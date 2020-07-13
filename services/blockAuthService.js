@@ -1,5 +1,7 @@
 const config = require('../config');
 const Web3 = require('web3');
+const crypto = require('crypto');
+const cryptico = require('cryptico');
 const BASE_URL = config.BASE_URL;
 const ETHEREUM_NODE_ADDRESS = config.ETHEREUM_NODE_ADDRESS;
 const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
@@ -53,6 +55,35 @@ const BlockAuthService = function() {
         return new Promise((resolve, reject) => {
 
 
+            UserService.findUserByUsername(username).then(data => {
+
+                
+                const expectedHashCode = crypto.createHash('sha256').update(code + data.data.password).digest('hex');
+
+                if(expectedHashCode != hashCode ){
+
+                    reject({status: 500, message: 'Authentication failed. Hash comparison failed'});
+                
+                }else{
+                    
+                    const privateKey = data.data.privateKey;
+                    var privateKeyTemp = cryptico.RSAKey();
+                    var privateKeyTemp = cryptico.RSAKey.parse(privateKey);
+
+                    const decrypted = cryptico.decrypt(cipher, privateKeyTemp);
+
+                    if(decrypted.status == "success"){
+
+                        resolve({status: 200, message: 'Authentication successful', data: decrypted.plaintext});
+                    }
+                }
+
+
+            }).catch(error => {
+
+                console.log('Error retrieving user data ' + error);
+                reject({status: 500, message: 'Error retrieving user data - ' + error});
+            });
 
             contract.getBlockAuthPublicKey(username, function(error, response){
 
