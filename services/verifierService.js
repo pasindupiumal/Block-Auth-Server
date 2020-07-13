@@ -30,7 +30,6 @@ const VerifierService = function() {
 
                     userKey = data.data.data;
 
-                    console.log('User Key: ' + userKey);
 
                     const tokenRaw = crypto.createHash('sha256').update(Math.random().toString()).digest('base64').substr(0,10);
                     const encrypted = cryptico.encrypt(tokenRaw, userKey, "").cipher;

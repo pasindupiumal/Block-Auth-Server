@@ -81,10 +81,6 @@ router.get('/verify', (req, res) => {
   const code = req.query.code;
   const hashCode = req.query.hashcode;
 
-  console.log('Username: ' + username);
-  console.log(' Code: ' + code);
-  console.log('Hash code: ' + hashCode);
-
   VerifierService.verifyUser(username, code, hashCode).then(data => {
 
     if(data.message == 'Authentication successful'){
