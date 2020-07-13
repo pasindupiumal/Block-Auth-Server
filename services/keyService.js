@@ -17,8 +17,12 @@ const KeyService = function() {
             const rsaPublicKey = cryptico.publicKeyString(rsaKey);
             console.log('RSA public key generated');
 
+            const code = crypto.createHash('sha256').update(rsaPublicKey).digest('base64').substr(0, 8);
+
+            var codeModified = code.replace(/\//g, 'ktr');
+
             //Get the user specific url
-            const userURL = BASE_URL + "/authentication/" + crypto.createHash('sha256').update(rsaPublicKey).digest('base64').substr(0, 8);
+            const userURL = BASE_URL + '/authentication/' + codeModified;
 
             const newUser = {
                 publicKey: rsaPublicKey,
