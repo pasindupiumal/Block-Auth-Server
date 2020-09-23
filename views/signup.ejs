@@ -42,31 +42,14 @@
 
     <script>
 
-        if(typeof(web3) == "undefined"){
+        /*if(typeof(web3) == "undefined"){
 
             toastr.error("Browser doesn't support Web3. Please install MetaMask to proceed");
 
-        }
+        }*/
 
-        const contractAddress = "<%= contractAddress %>";
-        const contractAbi = <%- JSON.stringify(abi) %>;
-        const node_address = "<%= node_address %>";
         var publicKey = "";
         var userUrl = "";
-
-        web3.setProvider(new web3.providers.HttpProvider("node_address"));
-        const contract = web3.eth.contract(contractAbi).at(contractAddress); 
-
-        web3.eth.getAccounts((error, accounts) => {
-
-                if(error){
-                    console.log(error);
-                    return;
-                }
-
-                console.log(accounts);
-                web3.eth.defaultAccount = accounts[0];
-        });
 
         $(document).ready(function(){
 
@@ -106,19 +89,12 @@
                 valid = false;
                 toastr.error("Not yet ready. Please try after a few seconds.");
             }
-            if( typeof(web3) == "undefined"){
-                toastr.error("Please install Metamask");
-                valid = false;
-            }
-            if( typeof(web3.eth.defaultAccount) == "undefined"){
-                toastr.error("Please login into Metamask");
-                valid = false;
-            }
             if( !valid ){
                 return;
             }
 
             var usernameFromChain = "";
+
 
             //Check username availability status
             $.get("/blockauth/username?username=" + username).then(data => {
@@ -131,65 +107,47 @@
 
                 }
                 else{
+
                     toastr.error("Username already taken");
                     return;
 
                 }
 
-                }).catch(erro => {
+            }).catch(error => {
 
                     console.log('Error retrieving keys - ' + error);
-            });
+            }); 
+
 
             function addUser(){
 
-                var password = CryptoJS.SHA256(password1).toString();
+                var password = CryptoJS.SHA256(password1).toString();                
 
-                const setData = contract.addNewUser(username, userUrl, publicKey, function(error, data) {
-
-                    if(error){
-                        console.log('Add New User Error: ' + error);
-                        return;
-                    }
-                    else{
-
-                        console.log('ANUD: ' + data);
-
-
-                        $.get("/blockauth/username?username=" + username).then(data => {
-
-                            if (data.data == false){
-
-                                $.post('/users/', {username: username, password: password, publicKey: publicKey}).then( response => {
+                $.post('/blockauth/user', {username: username, url: userUrl, publicKey: publicKey}).then( response1 => {
                                     
-                                    toastr.success("Registration successfuly");
-                                    return;
+                    console.log('Insert new user transaction successful');
 
-                                }).catch(error =>{ 
+                    $.post('/users/', {username: username, password: password, publicKey: publicKey}).then( response2 => {
+                             
+                        toastr.success("Registration successfuly");
+                        return;
+     
+                    }).catch(error =>{ 
 
-                                    console.log('Database operation failed - ' + error);
-                                    toastr.error("Registration unsuccessfuly");
-                                    return;
-                                });
-                                
-                                
+                        console.log('Database operation failed - ' + error);
+                        toastr.error("Registration unsuccessfuly. Database operation failed");
+                        return;
+                    });
+                          
 
-                            }
-                            else{
+                }).catch( error => { 
 
-                                toastr.error("Registration unsuccessfuly");
-                                return;
+                    console.log('Error with new user blockchain transaction - ' + error);
+                    toastr.error("Registration unsuccessfuly. Transaction error");
+                    return;
 
-                            }
+                }); 
 
-                        }).catch(erro => {
-
-                            console.log('Error determining registration status - ' + error);
-                        });
-
-                        
-                    }
-                });
 
             }
 
