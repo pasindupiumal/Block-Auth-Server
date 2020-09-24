@@ -15,7 +15,7 @@
 
     <div class="hero">
 
-        <div class="form-box">
+        <div class="form-box" id="form-box">
 
             <div class="button-box">
 
@@ -24,7 +24,7 @@
                 <button type="button" class="toggle-btn" onclick=registerButton()> Sign Up</button>
             </div>
 
-            <form id="login" class="input-group">
+            <form id="loginForm" class="input-group">
 
                 <input type="text" class="input-field" placeholder="Username" required/>
                 <input type="password" class="input-field" placeholder="Password" required/>
@@ -32,7 +32,7 @@
                 <button type="submit" class="submit-btn">Sign In</button>
             </form>
 
-            <form id="register" class="input-group">
+            <form id="registerForm" class="input-group">
 
                 <input type="text" class="input-field" placeholder="First Name" required/>
                 <input type="text" class="input-field" placeholder="Last Name" required/>
@@ -49,22 +49,25 @@
 
 <script>
 
-    let loginForm = document.getElementById("login");
-    let registerForm = document.getElementById("register");
+    let loginForm = document.getElementById("loginForm");
+    let registerForm = document.getElementById("registerForm");
     let btnDiv = document.getElementById("btn");
+    let formBox = document.getElementById("form-box");
 
     function registerButton() {
 
         loginForm.style.left = "-400px";
-        registerForm.style.left = "50px";
+        registerForm.style.left = "78px";
         btnDiv.style.left = "110px";
+        formBox.style.height = "710px";
     }
 
     function loginButton() {
 
-        loginForm.style.left = "50px";
+        loginForm.style.left = "78px";
         registerForm.style.left = "450px";
         btnDiv.style.left = "0";
+        formBox.style.height = "480px";
     }
 
 

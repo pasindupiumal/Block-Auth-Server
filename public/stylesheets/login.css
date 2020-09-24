@@ -17,7 +17,7 @@
 
 .form-box {
 
-  width: 380px;
+  width: 430px;
   height: 480px;
   position: relative;
   margin: 6% auto;
@@ -60,7 +60,7 @@
 
 .input-group {
 
-  top: 180px;
+  top: 140px;
   position: absolute;
   width: 280px;
   transition: .5s;
@@ -70,7 +70,7 @@
 
   width: 100%;
   padding: 10px 0;
-  margin: 5px 0;
+  margin: 15px 0;
   border-left: 0;
   border-top: 0;
   border-right: 0;
@@ -85,7 +85,7 @@
   padding: 10px 30px;
   cursor: pointer;
   display: block;
-  margin: auto;
+  margin: 15px auto;
   background: linear-gradient(to right, #ff105f, #ffad06);
   border: 0;
   outline: none;
@@ -101,18 +101,18 @@ span {
 
   color: #777;
   font-size: 12px;
-  bottom: 68px;
+  bottom: 94px;
   position: absolute;
 
 
 }
 
-#login {
+#loginForm {
 
-  left: 50px;
+  left: 78px;
 }
 
-#register {
+#registerForm {
 
   left: 450px;
 }
