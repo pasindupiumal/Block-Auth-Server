@@ -5,6 +5,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="/javascripts/rollups/sha256.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="login.css" type="text/css">
     <script src="login.js"></script>
@@ -33,14 +34,14 @@
                 <button type="submit" class="submit-btn">Sign In</button>
             </form>
 
-            <form id="registerForm" class="input-group">
+            <form id="registerForm" class="input-group" onSubmit="register(); return false;">
 
-                <input type="text" class="input-field" placeholder="First Name" required/>
-                <input type="text" class="input-field" placeholder="Last Name" required/>
-                <input type="text" class="input-field" placeholder="Email Address" required/>
-                <input type="text" class="input-field" placeholder="Username" required/>
-                <input type="password" class="input-field" placeholder="Password" required/>
-                <input type="password" class="input-field" placeholder="Confirm Password" required/>
+                <input type="text" class="input-field" placeholder="First Name" id="firstName"/>
+                <input type="text" class="input-field" placeholder="Last Name" id="lastName"/>
+                <input type="text" class="input-field" placeholder="Email Address" id="email"/>
+                <input type="text" class="input-field" placeholder="Username" id="username"/>
+                <input type="password" class="input-field" placeholder="Password" id="password1"/>
+                <input type="password" class="input-field" placeholder="Confirm Password" id="password2"/>
                 <input type="checkbox" class="check-box"><span>I agree to terms & conditions</span>
                 <button type="submit" class="submit-btn">Sign Up</button>
             </form>
