@@ -85,42 +85,45 @@ function register() {
         console.log('Error retrieving keys - ' + error);
         return;
     }); 
+
+
+    function addUser(){
+
+        //const password = CryptoJS.SHA256(password1).toString();                
+    
+        console.log("Username: " + username);
+        console.log("Password: " + password1);
+    
+        $.post('/blockauth/user', {username: username, url: userUrl, publicKey: publicKey}).then( response1 => {
+                            
+            console.log('Insert new user transaction successful');
+    
+            $.post('/users/', {username: username, password: password1, publicKey: publicKey}).then( response2 => {
+                     
+                toastr.success("Registration successful");
+                return;
+    
+            }).catch(error =>{ 
+    
+                console.log('Database operation failed - ' + error);
+                toastr.error("Registration unsuccessful. Database operation failed");
+                return;
+            });
+                  
+    
+        }).catch( error => { 
+    
+            console.log('Error with new user blockchain transaction - ' + error);
+            toastr.error("Registration unsuccessful. Transaction error");
+            return;
+    
+        }); 
+    
+    
+    }
 }
 
-function addUser(){
 
-    //const password = CryptoJS.SHA256(password1).toString();                
-
-    console.log("Username: " + username);
-    console.log("Password: " + password1);
-
-    $.post('/blockauth/user', {username: username, url: userUrl, publicKey: publicKey}).then( response1 => {
-                        
-        console.log('Insert new user transaction successful');
-
-        $.post('/users/', {username: username, password: password1, publicKey: publicKey}).then( response2 => {
-                 
-            toastr.success("Registration successful");
-            return;
-
-        }).catch(error =>{ 
-
-            console.log('Database operation failed - ' + error);
-            toastr.error("Registration unsuccessful. Database operation failed");
-            return;
-        });
-              
-
-    }).catch( error => { 
-
-        console.log('Error with new user blockchain transaction - ' + error);
-        toastr.error("Registration unsuccessful. Transaction error");
-        return;
-
-    }); 
-
-
-}
 
 function getRSAKeys() {
 
