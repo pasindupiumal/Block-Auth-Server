@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+    
 });
 
 function signInBtnClick() {
@@ -9,7 +10,7 @@ function signInBtnClick() {
 
 function signUpBtnClick() {
 
-    window.location.href = "http://localhost:3000/login";
+    window.location.href = "http://localhost:3000/signin?redirect=http://localhost:3000/verify/&action=register";
 }
 
 function useCXBtnClick() {

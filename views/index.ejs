@@ -1,23 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Express-Test</title>
+
+    <title> Sign In </title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="/javascripts/rollups/sha256.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="index.css" type="text/css">
     <script src="index.js"></script>
+    
 </head>
+
+
 <body>
 
+    <div class="hero">
 
-    <button onclick=signInBtnClick()> Sign In </button> <br/>
-    <button onclick=signUpBtnClick()> Sign Up with CreditX Authentication</button> <br/>
-    <button onclick=useCXBtnClick()> Incoporate CreditX Authentication with My Application</button> <br/>
+        <div class="form-box" id="form-box">
 
+            <div class="button-box">
 
+                <h1 id="title">CreditX Authentication Service</h1>
+            </div>
+
+            <form id="loginForm" class="input-group">
+ 
+                <button type="button" class="submit-btn" onclick=signInBtnClick()> <h3> Sign In to CreditX Authentication </h3> </button>
+
+                <button type="button" class="submit-btn" onclick=signUpBtnClick()> <h3> Sign Up with CreditX Authentication </h3> </button>
+
+                <button type="button" class="submit-btn" onclick=useCXBtnClick()> <h3> Use CreditX Authentication with My Application </h3></button>
+
+            </form>
+            
+        </div>
+    </div>
+    
 </body>
+
 </html>

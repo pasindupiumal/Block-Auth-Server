@@ -12,6 +12,14 @@ $(document).ready(function() {
     btnDiv = document.getElementById("btn");
     formBox = document.getElementById("form-box");
 
+    const url = new URL(window.location.href);
+    const action = url.searchParams.get("action");
+
+    if(action == "register"){
+
+        registerButton();
+    }
+
 });
 
 
@@ -38,7 +46,7 @@ function login(){
     const password = $("#loginPassword").val();
     const url = new URL(window.location.href);
     const redirect = url.searchParams.get("redirect");
-    //const redirect = "http://localhost:5000/users/authenticate";
+
     console.log("Redirect link: " + redirect);
 
     $.post('/blockauth/url', {username: username}).then(data => {
@@ -51,7 +59,6 @@ function login(){
 
             const code = Math.ceil(Math.random() * 1000);
             const token = CryptoJS.SHA256(code.toString()+CryptoJS.SHA256(password).toString()).toString();
-            //window.location.href = redirect + "?code=" + code + "&hashcode=" + token + "&username=" + username;
 
             $.get(redirect + "?code=" + code + "&hashcode=" + token + "&username=" + username).then(data => {
 
@@ -154,6 +161,7 @@ function register() {
             $.post('/users/', {username: username, password: password, publicKey: publicKey}).then( response2 => {
                      
                 toastr.success("Registration successful");
+                loginButton();
                 return;
     
             }).catch(error =>{ 

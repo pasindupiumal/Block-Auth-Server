@@ -29,6 +29,10 @@ router.get('/signin', (req, res) => {
   res.render('signin');
 });
 
+router.get('/profile', (req, res) => {
+  res.render('profile');
+});
+
 router.get('/authentication/:id', (req, res) => {
 
   const username = req.query.username;
@@ -88,8 +92,9 @@ router.get('/verify', (req, res) => {
   VerifierService.verifyUser(username, code, hashCode).then(data => {
 
     if(data.message == 'Authentication successful'){
+
       console.log('Login success');
-      res.send({message: 'Authentication Successful', data: true, to: 'https://www.yahoo.com'});
+      res.send({message: 'Authentication Successful', data: true, to: 'http://localhost:3000/profile'});
     }
     else{
       res.send({message: 'Authentication Unuccessful', data: false});
