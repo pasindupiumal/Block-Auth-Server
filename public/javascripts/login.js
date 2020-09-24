@@ -37,7 +37,10 @@ function login(){
 
     const username = $("#loginUsername").val();
     const password = $("#loginPassword").val();
-    const redirect = "http://localhost:5000/users/authenticate";
+    const url = new URL(window.location.href);
+    const redirect = url.searchParams.get("redirect");
+    //const redirect = "http://localhost:5000/users/authenticate";
+    console.log("Redirect link: " + redirect);
 
     $.post('/blockauth/url', {username: username}).then(data => {
 
@@ -57,7 +60,7 @@ function login(){
 
                 if (data.data == true){
 
-                    window.location.href = "https://www.google.com";
+                    window.location.href = data.to;
                 }
                 else{
 

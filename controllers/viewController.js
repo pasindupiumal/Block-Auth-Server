@@ -89,7 +89,7 @@ router.get('/verify', (req, res) => {
 
     if(data.message == 'Authentication successful'){
       console.log('Login success');
-      res.send({message: 'Authentication Successful', data: true});
+      res.send({message: 'Authentication Successful', data: true, to: 'https://www.yahoo.com'});
     }
     else{
       res.send({message: 'Authentication Unuccessful', data: false});
