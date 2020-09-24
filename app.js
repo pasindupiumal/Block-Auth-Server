@@ -26,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(path.join(__dirname, '/public/resources')));
 app.use(express.static(path.join(__dirname, '/public/stylesheets')));
+app.use(express.static(path.join(__dirname, '/public/javascripts')));
 
 app.use('/', routes);
 

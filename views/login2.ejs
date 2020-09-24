@@ -3,10 +3,11 @@
 
     <title> Sign In </title>
 
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> -->
-    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" /> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="login.css" type="text/css">
+    <script src="login.js"></script>
     
 </head>
 
@@ -46,32 +47,6 @@
             
         </div>
     </div>
-
-<script>
-
-    let loginForm = document.getElementById("loginForm");
-    let registerForm = document.getElementById("registerForm");
-    let btnDiv = document.getElementById("btn");
-    let formBox = document.getElementById("form-box");
-
-    function registerButton() {
-
-        loginForm.style.left = "-400px";
-        registerForm.style.left = "78px";
-        btnDiv.style.left = "110px";
-        formBox.style.height = "710px";
-    }
-
-    function loginButton() {
-
-        loginForm.style.left = "78px";
-        registerForm.style.left = "450px";
-        btnDiv.style.left = "0";
-        formBox.style.height = "480px";
-    }
-
-
-</script>
     
 </body>
 
