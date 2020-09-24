@@ -33,6 +33,57 @@ function loginButton() {
     formBox.style.height = "480px";
 }
 
+function login(){
+
+    const username = $("#loginUsername").val();
+    const password = $("#loginPassword").val();
+    const redirect = "http://localhost:3000/verify/";
+
+    $.post('/blockauth/url', {username: username}).then(data => {
+
+        if(!data.data){
+            toastr.error("Username is not registered");
+            return;
+        }
+        else{
+
+            const code = Math.ceil(Math.random() * 1000);
+            const token = CryptoJS.SHA256(code.toString()+CryptoJS.SHA256(password).toString()).toString();
+            //window.location.href = redirect + "?code=" + code + "&hashcode=" + token + "&username=" + username;
+
+            $.get(redirect + "?code=" + code + "&hashcode=" + token + "&username=" + username).then(data => {
+
+                usernameFromChain = data.data;
+
+                if (data.data == true){
+
+                    window.location.href = "https://www.google.com";
+                }
+                else{
+
+                    toastr.error("Invalid password");
+                    return;
+        
+                }
+    
+        
+            }).catch(error => {
+        
+                toastr.error("Error occured when validating credentials");
+                return;
+            }); 
+            
+
+        }
+
+    }).catch(error => {
+
+        toastr.error("Error validating username provided");
+        console.log('Error retrieving user url: ' + error);
+    });
+
+}
+
 function register() {
 
     var username = $("#username").val();
@@ -89,16 +140,16 @@ function register() {
 
     function addUser(){
 
-        //const password = CryptoJS.SHA256(password1).toString();                
+        const password = CryptoJS.SHA256(password1).toString();                
     
-        console.log("Username: " + username);
-        console.log("Password: " + password1);
+        //console.log("Username: " + username);
+        //console.log("Password: " + password1);
     
         $.post('/blockauth/user', {username: username, url: userUrl, publicKey: publicKey}).then( response1 => {
                             
             console.log('Insert new user transaction successful');
     
-            $.post('/users/', {username: username, password: password1, publicKey: publicKey}).then( response2 => {
+            $.post('/users/', {username: username, password: password, publicKey: publicKey}).then( response2 => {
                      
                 toastr.success("Registration successful");
                 return;

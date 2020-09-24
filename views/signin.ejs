@@ -26,10 +26,10 @@
                 <button type="button" class="toggle-btn" onclick=registerButton()> Sign Up</button>
             </div>
 
-            <form id="loginForm" class="input-group">
+            <form id="loginForm" class="input-group" onSubmit="login(); return false;">
 
-                <input type="text" class="input-field" placeholder="Username" required/>
-                <input type="password" class="input-field" placeholder="Password" required/>
+                <input type="text" class="input-field" placeholder="Username" required id="loginUsername"/>
+                <input type="password" class="input-field" placeholder="Password" required id="loginPassword"/>
                 <input type="checkbox" class="check-box"><span>Remember Password</span>
                 <button type="submit" class="submit-btn">Sign In</button>
             </form>

@@ -22,7 +22,11 @@ router.get('/signup', (req, res) => {
 
 
 router.get('/login', (req, res) => {
-  res.render('login2');
+  res.render('login');
+});
+
+router.get('/signin', (req, res) => {
+  res.render('signin');
 });
 
 router.get('/authentication/:id', (req, res) => {
@@ -85,10 +89,10 @@ router.get('/verify', (req, res) => {
 
     if(data.message == 'Authentication successful'){
       console.log('Login success');
-      res.send('Login Successful');
+      res.send({message: 'Authentication Successful', data: true});
     }
     else{
-      res.send('Login Unsuccessful');
+      res.send({message: 'Authentication Unuccessful', data: false});
     }
 
   }).catch(error => {
