@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const routes = require('./routes/routes');
+const cors = require('cors');
 
 const app = express();
 
@@ -14,6 +15,12 @@ mongoose.connect('mongodb://localhost:27017/Block-Auth', {useNewUrlParser:true})
   console.log(error);
   process.exit(-1);
 })
+
+app.use(cors({
+  //origin: 'http://localhost:3001'
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'x-auth-token'
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

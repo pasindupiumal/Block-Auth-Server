@@ -37,7 +37,7 @@ function login(){
 
     const username = $("#loginUsername").val();
     const password = $("#loginPassword").val();
-    const redirect = "http://localhost:3000/verify/";
+    const redirect = "http://localhost:5000/users/authenticate";
 
     $.post('/blockauth/url', {username: username}).then(data => {
 
