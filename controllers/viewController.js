@@ -22,7 +22,7 @@ router.get('/signup', (req, res) => {
 
 
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login2');
 });
 
 router.get('/authentication/:id', (req, res) => {

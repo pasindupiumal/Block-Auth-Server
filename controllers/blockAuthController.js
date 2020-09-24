@@ -145,4 +145,26 @@ router.post('/newuser', (req, res) => {
 
 });
 
+router.post('/ethereum', (req, res) => {
+
+    const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeAddress));
+
+    web3.eth.defaultAccount = '0x73255a1298c6f69d911e5d5BDBd7c32383a0487D';
+
+    web3.eth.getTransactionCount(web3.eth.defaultAccount, function (error, nonce) {
+
+        console.log('Nonce value is ' + nonce);
+
+        const contract = new web3.eth.Contract(abi, contractAddress, {
+
+            from: web3.eth.defaultAccount,
+            gas: 3000000
+        });
+
+        
+
+    });
+
+});
+
 module.exports = router;

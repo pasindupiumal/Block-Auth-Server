@@ -174,6 +174,24 @@ const BlockAuthService = function() {
         });
     };
 
+    this.createEthereumAccount = (username) => {
+
+        return new Promise((resolve, reject) => {
+
+            const newAccount = web3.eth.accounts.create(web3.utils.randomHex(32));
+
+            if (!newAccount){
+
+                reject({status: 500, message: 'Error encountered creating new Ethereum account - ' + error});
+            }
+            else{
+
+                resolve({status: 200, message: 'User address received', data: newAccount});
+            }
+                        
+        });
+    };
+
     
 };
 
