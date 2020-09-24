@@ -12,8 +12,6 @@ $(document).ready(function() {
     btnDiv = document.getElementById("btn");
     formBox = document.getElementById("form-box");
 
-    getRSAKeys();
-
 });
 
 
@@ -23,6 +21,7 @@ function registerButton() {
     registerForm.style.left = "78px";
     btnDiv.style.left = "110px";
     formBox.style.height = "710px";
+    getRSAKeys();
 }
 
 function loginButton() {
