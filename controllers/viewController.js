@@ -33,6 +33,10 @@ router.get('/profile', (req, res) => {
   res.render('profile');
 });
 
+router.get('/integrate', (req, res) => {
+  res.render('integrate');
+});
+
 router.get('/authentication/:id', (req, res) => {
 
   const username = req.query.username;

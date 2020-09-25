@@ -15,5 +15,5 @@ function signUpBtnClick() {
 
 function useCXBtnClick() {
 
-    
+    window.location.href = "http://localhost:3000/integrate";
 }
