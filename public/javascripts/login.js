@@ -66,6 +66,7 @@ function login(){
 
                 if (data.data == true){
 
+                    toastr.success("Login successful");
                     window.location.href = data.to;
                 }
                 else{
