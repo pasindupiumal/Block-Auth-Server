@@ -1,8 +1,8 @@
 module.exports.BASE_URL = "http://localhost:3000";
 module.exports.ETHEREUM_NODE_ADDRESS = "http://127.0.0.1:7545"
-module.exports.CONTRACT_ADDRESS = "0x7f5823af8A8644eac24879d033bB9d4F741eA10D";
-module.exports.ETHEREUM_ACCOUNT_ADDRESS = "0x9bd298b344f01bBB2E66De02887B1fA34e4d6318";
-module.exports.PRIVATE_KEY = "ba5fe87d762716f7ad9d9cfbcc075bc20914a3339aed3bbdd21f6c22e29dfcaf"
+module.exports.CONTRACT_ADDRESS = "0xa11DcB04e0a74fb18F5C39150679027d3A486Da2";
+module.exports.ETHEREUM_ACCOUNT_ADDRESS = "0x3baFbEcB7600C61e060ed46a6B6F57Fb25b68843";
+module.exports.PRIVATE_KEY = "f09a9d7293d4d907460592c199e17acafc9c60f2b1985bc2462f328031240244"
 module.exports.ABI = [
   {
     "inputs": [],

@@ -8,10 +8,13 @@ router.post('/', (req, res) => {
     user = {
         username: req.body.username,
         password: req.body.password,
-        publicKey: req.body.publicKey
+        publicKey: req.body.publicKey,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email
     }
 
-    UserService.updateUsernameAndPassword(user).then(data => {
+    UserService.updateUserData(user).then(data => {
 
         res.status(data.status).send({message: data.message, data: data.data});
 

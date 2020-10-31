@@ -96,6 +96,9 @@ function login(){
 
 function register() {
 
+    var firstName = $("#firstName").val();
+    var lastName = $("#lastName").val();
+    var email = $("#email").val();
     var username = $("#username").val();
     var password1 = $("#password1").val();
     var password2 = $("#password2").val();
@@ -103,21 +106,46 @@ function register() {
 
     var valid = true;
 
-    if( !validUsername ){
+    if( !firstName ){
+        toastr.error("First name field cannot be empty");
+        valid = false;
+    }
+    if( !lastName ){
+        toastr.error("Last name field cannot be empty");
+        valid = false;
+    }
+    if( !email ){
+        toastr.error("Email field cannot be empty");
+        valid = false;
+    }
+    if( !username ){
+        toastr.error("Username field cannot be empty");
+        valid = false;
+    }
+    if( !password1 ){
+        toastr.error("Password field cannot be empty");
+        valid = false;
+    }
+    if( !password2 ){
+        toastr.error("Confirm password field cannot be empty");
+        valid = false;
+    }
+    if( username && !validUsername ){
         toastr.error("Username can have only alpha numeric characters, . and _");
         valid = false;
     }
-    if(password1 != password2){
+    if( (password1 && password2) && (password1 != password2)){
         toastr.error("Passwords don't match");
         valid = false;
     }
     if(publicKey == "" || userUrl == ""){
         valid = false;
-        toastr.error("Not yet ready. Please try after a few seconds.");
+        toastr.error("Generating a new set of RSA keys. Please try after a few seconds.");
     }
     if( !valid ){
         return;
     }
+
 
     var usernameFromChain = "";
 
@@ -150,16 +178,13 @@ function register() {
 
     function addUser(){
 
-        const password = CryptoJS.SHA256(password1).toString();                
-    
-        //console.log("Username: " + username);
-        //console.log("Password: " + password1);
+        const password = CryptoJS.SHA256(password1).toString();
     
         $.post('/blockauth/user', {username: username, url: userUrl, publicKey: publicKey}).then( response1 => {
                             
             console.log('Insert new user transaction successful');
     
-            $.post('/users/', {username: username, password: password, publicKey: publicKey}).then( response2 => {
+            $.post('/users/', {username: username, password: password, publicKey: publicKey, firstName: firstName, lastName: lastName, email: email}).then( response2 => {
                      
                 toastr.success("Registration successful");
                 loginButton();

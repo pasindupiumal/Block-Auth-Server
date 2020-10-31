@@ -30,8 +30,56 @@ const UserService = function() {
                 reject({status: 500, message: 'Error - ' + error});
             })
 
-            
+
         })
+    };
+
+    this.addNewUser = (userData) => {
+
+        return new Promise((resolve, reject) => {
+
+            UserModel.User.findOne({username: userData.username}).then(user => {
+
+                if (user == null){
+
+                    const newUser = new UserModel.User ({
+                        privateKey: userData.privateKey,
+                        publicKey: userData.publicKey,
+                        url: userData.url,
+                        username: userData.username,
+                        password: userData.password,
+                        firstName: userData.firstName,
+                        lastName: userData.lastName,
+                        email: userData.email
+                    });
+
+                    newUser.save().then(() => {
+
+                        const userTempData = {
+                            username: newUser.username,
+                            email: newUser.email
+                        }
+
+                        resolve({status: 200, message: 'New user created successfully', data: userTempData});
+
+                    }).catch(error => {
+
+                        reject({status: 500, message: 'Error - ' + error});
+                    })
+
+                }
+                else{
+
+                    reject({status: 500, message: 'Error - Username already taken.'});
+                }
+
+            }).catch(error => {
+
+                reject({status: 500, message: 'Error - ' + error});
+            });
+
+
+        });
     };
 
     this.findUserByUsername = (username) => {
@@ -57,7 +105,7 @@ const UserService = function() {
 
     }
 
-    this.updateUsernameAndPassword = (userData) => {
+    this.updateUserData = (userData) => {
 
         return new Promise((resolve, reject) => {
 
@@ -78,7 +126,10 @@ const UserService = function() {
                                 publicKey: currentUser.publicKey,
                                 url: currentUser.url,
                                 username: userData.username,
-                                password: userData.password
+                                password: userData.password,
+                                firstName: userData.firstName,
+                                lastName: userData.lastName,
+                                email: userData.email
                             }
         
                             UserModel.User.findByIdAndUpdate(currentUser._id, newUser).then(() => {
