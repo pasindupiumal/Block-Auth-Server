@@ -185,7 +185,8 @@ function register() {
             console.log('Insert new user transaction successful');
     
             $.post('/users/', {username: username, password: password, publicKey: publicKey, firstName: firstName, lastName: lastName, email: email}).then( response2 => {
-                     
+
+                $('#registerForm').trigger('reset');
                 toastr.success("Registration successful");
                 loginButton();
                 return;
