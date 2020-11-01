@@ -64,10 +64,10 @@ function login(){
 
                 usernameFromChain = data.data;
 
-                if (data.data == true){
+                if (data.data.status === true){
 
                     toastr.success("Login successful");
-                    window.location.href = data.to;
+                    window.location.href = data.data.to;
                 }
                 else{
 
@@ -75,7 +75,6 @@ function login(){
                     return;
         
                 }
-    
         
             }).catch(error => {
         

@@ -9,7 +9,6 @@ const Web3 = require('web3');
 const contractAddress = config.CONTRACT_ADDRESS;
 const abi = config.ABI;
 const ethNodeAddress = config.ETHEREUM_NODE_ADDRESS;
-const baseURL = config.BASE_URL;
 const privateKey = "f6779c36dd61671a3f7ef654c49a642260ca985277bc6c980ea9923fdc477b34";
 
 

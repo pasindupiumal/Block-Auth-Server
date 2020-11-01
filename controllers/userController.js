@@ -28,8 +28,6 @@ router.post('/', (req, res) => {
 
 /*router.post('/userData', (req, res) => {
 
-    
-
     UserService.findUserByUsername(req.body.username).then(data => {
 
         res.status(data.status).send({message: data.message, data: data.data});

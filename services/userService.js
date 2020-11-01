@@ -181,7 +181,7 @@ const UserService = function() {
 
                 if(expectedHashCode != hashCode ){
 
-                    reject({status: 500, message: 'Authentication failed. Hash comparison failed'});
+                    reject({status: 500, message: 'Authentication failed. Password hash comparison failed'});
                 
                 }else{
                     
@@ -196,7 +196,7 @@ const UserService = function() {
                         resolve({status: 200, message: 'Authentication successful', data: decrypted.plaintext});
                     }
                     else{
-                        reject({status: 500, message: 'Authentication successful. Decryption unsuccessful'});
+                        reject({status: 500, message: 'Authentication unsuccessful. Decryption unsuccessful'});
                     }
                 }
 

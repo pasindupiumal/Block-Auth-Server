@@ -14,7 +14,6 @@ const VerifierService = function() {
         return new Promise((resolve, reject) => {
 
            const getUserURL = BASE_URL + '/blockauth/url';
-           const getAddress = BASE_URL + '/blockauth/address';
            const getKey = BASE_URL +  '/blockauth/key';
 
            var userURL = "";
