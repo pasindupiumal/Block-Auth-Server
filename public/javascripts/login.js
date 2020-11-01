@@ -220,9 +220,9 @@ function getRSAKeys() {
         publicKey = data.data.publicKey;
         userUrl = data.data.url;
 
-        console.log('Public Key: ' + publicKey);
-        console.log("\n");
-        console.log(userUrl);
+        //console.log('Public Key: ' + publicKey);
+        //console.log("\n");
+        //console.log(userUrl);
 
     }).catch(erro => {
         console.log('Error retrieving keys - ' + error);

@@ -7,16 +7,34 @@ const UserService = require('../services/userService');
 
 const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 const ABI = config.ABI;
-//const ABI = JSON.stringify(config.ABIFrontEnd);
 const ETHEREUM_NODE_ADDRESS = config.ETHEREUM_NODE_ADDRESS;
 const BASE_URL = config.BASE_URL;
 
+const redirectToLogin = (req, res, next) => {
+
+  if (!req.session.isLogged){
+    res.redirect('http://localhost:3000/signin?redirect=http://localhost:3000/verify/');
+  }
+  else{
+    next();
+  }
+}
+
+const redirectToHome = (req, res, next) => {
+
+  if (req.session.isLogged){
+    res.redirect('http://localhost:3000/profile/');
+  }
+  else{
+    next();
+  }
+}
 
 router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/signup', (req, res) => {
+router.get('/signup', redirectToHome, (req, res) => {
   res.render('signup', { contractAddress: CONTRACT_ADDRESS, abi: ABI, node_address: ETHEREUM_NODE_ADDRESS});
 })
 
@@ -29,7 +47,7 @@ router.get('/signin', (req, res) => {
   res.render('signin');
 });
 
-router.get('/profile', (req, res) => {
+router.get('/profile', redirectToLogin, (req, res) => {
   res.render('profile');
 });
 
@@ -98,6 +116,7 @@ router.get('/verify', (req, res) => {
     if(data.message == 'Authentication successful'){
 
       console.log('Login success');
+      req.session.isLogged = true;
       res.send({message: 'Authentication Successful', data: true, to: 'http://localhost:3000/profile'});
     }
     else{
@@ -132,6 +151,17 @@ router.post('/authentication/:id/verify', (req, res) => {
   })
 
 });
+
+router.get('/logout', (req, res) => {
+
+  req.session.destroy(error => {
+    if(error){
+      return res.redirect('/profile');
+    }
+    res.clearCookie('SID');
+    res.redirect('/');
+  })
+})
 
 
 

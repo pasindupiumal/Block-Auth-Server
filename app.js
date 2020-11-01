@@ -6,8 +6,20 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const routes = require('./routes/routes');
 const cors = require('cors');
+const session = require('express-session');
 
 const app = express();
+
+app.use(session({
+  name: 'SID',
+  resave: false,
+  saveUninitialized: false,
+  secret: 'afkja45353jlkjdlgj#@@%(%)#@M',
+  cookie: {
+    sameSite: true,
+    secure: false,
+  }
+}));
 
 mongoose.connect('mongodb://localhost:27017/Block-Auth', {useNewUrlParser:true}).then(() => {
   console.log('\nConneted to the mongo database');
