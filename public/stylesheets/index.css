@@ -1,72 +1,43 @@
-* {
+.root-div {
+    margin: auto;
+    height: 100vh;
 
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
 }
 
-.hero {
-
+.main-row {
     height: 100%;
-    width: 100%;
-    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),url(landingPageImage.png);
+}
+.my-row {
+}
+
+.my-col {
+}
+
+.img-col {
+    background-image: url("landingPageImage.png");
     background-position: center;
     background-size: cover;
-    position: absolute;
 }
 
-
-.form-box {
-
-    width: 680px;
-    height: 100%;
-    position: fixed;
-    margin-left:  1230px;
-    background: #fff;
-    padding: 5px;
-    overflow: hidden;
-
+.button-row {
+    height: 80%;
+    padding-top: 16%;
 }
 
-
-.button-box {
-
-    width: 80%;
-    margin: 45px auto;
-    position: relative;
-    padding-left: 23px;
-    box-shadow: 0 0 20px 9px #ff61241f;
-    border-radius: 30px;
-    padding-left: 80px;
+h1 {
+    font-size: 3.8vh;
+    text-align: center;
 }
 
-
-.input-group {
-
-    top: 140px;
-    position: absolute;
-    width: 450px;
-    transition: .5s;
-}
- 
-  
 .submit-btn {
-
-    width: 90%;
+    width: 85%;
     padding: 10px 30px;
     cursor: pointer;
     display: block;
-    margin: 45px auto;
+    margin: 15px auto;
     background: linear-gradient(to right, #ff105f, #ffad06);
     border: 0;
     outline: none;
     border-radius: 30px;
+    font-size: 2vh;
 }
-
-
-#loginForm {
-
-    left: 110px;
-}
-  
- 

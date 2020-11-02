@@ -57,6 +57,7 @@ router.get('/verify', (req, res) => {
         username: username
       }
       req.session.isLogged = true;
+      req.session.username = username;
       res.send({message: 'Authentication Successful', data: returnData});
     }
     else{
