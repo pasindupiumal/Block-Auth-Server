@@ -1,3 +1,4 @@
+//Variable declarations
 let loginForm = "";
 let registrationForm = "";
 let btnDiv = "";
@@ -5,6 +6,7 @@ let formBox = "";
 let publicKey = "";
 let userUrl = "";
 
+//Operations to be performed once the document is ready.
 $(document).ready(function() {
 
     loginForm = document.getElementById("loginForm");
@@ -22,7 +24,7 @@ $(document).ready(function() {
 
 });
 
-
+//Method for managing transitions for user interface.
 function registerButton() {
 
     loginForm.style.left = "-400px";
@@ -32,6 +34,7 @@ function registerButton() {
     getRSAKeys();
 }
 
+//Method for managing transitions for user interface.
 function loginButton() {
 
     loginForm.style.left = "78px";
@@ -39,6 +42,7 @@ function loginButton() {
     btnDiv.style.left = "0";
     formBox.style.height = "480px";
 }
+
 
 function login(){
 
@@ -73,15 +77,15 @@ function login(){
 
                     toastr.error("Invalid password");
                     return;
-        
+
                 }
-        
+
             }).catch(error => {
-        
+
                 toastr.error("Error occured when validating credentials");
                 return;
-            }); 
-            
+            });
+
 
         }
 
@@ -93,8 +97,10 @@ function login(){
 
 }
 
+//Method for performing registration of new users.
 function register() {
 
+    //Obtain values user provided for input fields.
     var firstName = $("#firstName").val();
     var lastName = $("#lastName").val();
     var email = $("#email").val();
@@ -105,6 +111,7 @@ function register() {
 
     var valid = true;
 
+    //Perform form validation for data inserted.
     if( !firstName ){
         toastr.error("First name field cannot be empty");
         valid = false;
@@ -150,13 +157,14 @@ function register() {
 
 
 
-    //Check username availability status
+    //Check username availability status.
     $.get("/blockauth/username?username=" + username).then(data => {
 
         usernameFromChain = data.data;
 
         if (usernameFromChain == true){
-            
+
+            //Incase the selected username is available. Proceed with the registration process.
             addUser();
 
         }
@@ -172,56 +180,57 @@ function register() {
         toastr.error("Error retreving username availability status");
         console.log('Error retrieving keys - ' + error);
         return;
-    }); 
+    });
 
 
     function addUser(){
 
+        //Hash the password prior to transmissions between API calls.
         const password = CryptoJS.SHA256(password1).toString();
-    
+
+        //Provide the necessary parameters and invoke the relevant blockauth endpoint to add the new user data to the blockchain.
         $.post('/blockauth/user', {username: username, url: userUrl, publicKey: publicKey}).then( response1 => {
-                            
+
+            //In case of a successful trnascation. Proceed with the registration and persist the private data in the MongoDB database.
             console.log('Insert new user transaction successful');
-    
+
             $.post('/users/', {username: username, password: password, publicKey: publicKey, firstName: firstName, lastName: lastName, email: email}).then( response2 => {
 
+                //In case of a successful registration. Notify the user and redirect to the login page.
                 $('#registerForm').trigger('reset');
                 toastr.success("Registration successful");
                 loginButton();
                 return;
-    
-            }).catch(error =>{ 
-    
+
+            }).catch(error =>{
+
                 console.log('Database operation failed - ' + error);
                 toastr.error("Registration unsuccessful. Database operation failed");
                 return;
             });
-                  
-    
-        }).catch( error => { 
-    
+
+
+        }).catch( error => {
+
             console.log('Error with new user blockchain transaction - ' + error);
             toastr.error("Registration unsuccessful. Transaction error");
             return;
-    
-        }); 
-    
-    
+
+        });
+
+
     }
 }
 
 
-
+//Function to generate a new set of RSA keys for new users.
 function getRSAKeys() {
 
+    //Invoke the REST endpoint responsible for the RSA key generation and obtain the releavant key data.
     $.get("/keys/").then(data => {
 
         publicKey = data.data.publicKey;
         userUrl = data.data.url;
-
-        //console.log('Public Key: ' + publicKey);
-        //console.log("\n");
-        //console.log(userUrl);
 
     }).catch(erro => {
         console.log('Error retrieving keys - ' + error);

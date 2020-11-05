@@ -82,8 +82,7 @@ const BlockAuthService = function() {
                                     reject({status: 500, message: 'Error inserting new user to blockchain'});
                                 }
 
-                                
-                                
+
                             }
                         });
             

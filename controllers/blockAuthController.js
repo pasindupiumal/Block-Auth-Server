@@ -1,17 +1,11 @@
 const express =  require('express');
 const router = express.Router();
 const BlockAuthService = require('../services/blockAuthService');
-const config = require('../config');
-const ethereumTx = require('ethereumjs-tx').Transaction;
-const Web3 = require('web3');
 
-
-const contractAddress = config.CONTRACT_ADDRESS;
-const abi = config.ABI;
-const ethNodeAddress = config.ETHEREUM_NODE_ADDRESS;
-const privateKey = "f6779c36dd61671a3f7ef654c49a642260ca985277bc6c980ea9923fdc477b34";
-
-
+/*
+    Endpoint for obtaining public key of a specific user registered in the CreditXAuthenticatorService.
+    Takes the username as an input parameters and returns the public key associated with the username.
+ */
 router.post('/key', (req, res) => {
 
     BlockAuthService.getBlockAuthPublicKey(req.body.username).then(data => {
@@ -25,6 +19,10 @@ router.post('/key', (req, res) => {
 
 });
 
+/*
+    Endpoint for identifying whethere a specific username is already registered in the CreditX Authentication
+    Service. Takes the username as an input parameter and returns whether the username is available or not.
+ */
 router.get('/username', (req, res) => {
 
     BlockAuthService.usernameAvailable(req.query.username).then(data => {
@@ -39,6 +37,10 @@ router.get('/username', (req, res) => {
 
 });
 
+/*
+    Endpoint for obtaining the unique url generated for each user. Takes the username as an
+    input parameter and returns the url associated with the given username.
+ */
 router.post('/url', (req, res) => {
 
     BlockAuthService.getBlockAuthUrl(req.body.username).then(data => {
@@ -52,6 +54,10 @@ router.post('/url', (req, res) => {
 
 });
 
+/*
+    Endpoint for obtaining the Ethereum address of the the user. Takes in the username as an input
+    parameter and provides the default Ethereum address of the user.
+ */
 router.post('/address', (req, res) => {
 
     BlockAuthService.getAddress(req.body.username).then(data => {
@@ -65,6 +71,12 @@ router.post('/address', (req, res) => {
 
 });
 
+/*
+    Endpoint for registering a new user in the chain. Takes the relevant user data as input
+    parameters and registers the user in the chain. The smart contracts emit an event once a new user
+    is successfully registered in the chain, and here the BlockAuthService listen for the particular event
+    to verify the status of the user registration process.
+ */
 router.post('/user', (req, res) => {
 
     userData = {
@@ -85,85 +97,5 @@ router.post('/user', (req, res) => {
 
 });
 
-router.post('/newuser', (req, res) => {
-
-    const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeAddress));
-
-    web3.eth.defaultAccount = '0x73255a1298c6f69d911e5d5BDBd7c32383a0487D';
-
-    web3.eth.getTransactionCount(web3.eth.defaultAccount, function (error, nonce) {
-
-        console.log('Nonce value is ' + nonce);
-
-        const contract = new web3.eth.Contract(abi, contractAddress, {
-
-            from: web3.eth.defaultAccount,
-            gas: 3000000
-        });
-
-        const functionABI = contract.methods.addNewUser('jj1111', '123', '123456').encodeABI();
-
-        let details = {
-
-            "nonce": nonce,
-            "gasPrice": web3.utils.toHex(web3.utils.toWei('47', 'gwei')),
-            "gas": 300000,
-            "to": contractAddress,
-            "value": 0,
-            "data": functionABI
-        };
-
-        const transaction = new ethereumTx(details);
-
-        transaction.sign(Buffer.from(privateKey, 'hex'));
-
-        let rawData = '0x' + transaction.serialize().toString('hex');
-
-        web3.eth.sendSignedTransaction(rawData).on('transactionHash', function(hash) {
-
-            console.log('Transaction Hash: ' + hash);
-
-        }).on('receipt', function(receipt) {
-
-            console.log('Transaction Receipt: ' + receipt);
-            //res.send(receipt);
-
-            contract.methods.usernameAvailable('jj1111').call((error, result) => {
-
-                if (error){
-                    res.send('Error: ' + error);
-                }
-                else{
-                    res.send('Result: ' + result);
-                }
-            });
-
-        }).on('error', console.error);
-
-    });
-
-});
-
-router.post('/ethereum', (req, res) => {
-
-    const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeAddress));
-
-    web3.eth.defaultAccount = '0x73255a1298c6f69d911e5d5BDBd7c32383a0487D';
-
-    web3.eth.getTransactionCount(web3.eth.defaultAccount, function (error, nonce) {
-
-        console.log('Nonce value is ' + nonce);
-
-        const contract = new web3.eth.Contract(abi, contractAddress, {
-
-            from: web3.eth.defaultAccount,
-            gas: 3000000
-        });
-
-        
-
-    });
-
-});
 
 module.exports = router;

@@ -1,3 +1,7 @@
+* {
+    font-weight: bold;
+}
+
 .root-div {
     margin: auto;
     height: 100vh;
@@ -22,6 +26,13 @@
 .button-row {
     height: 80%;
     padding-top: 16%;
+}
+
+.title-box {
+    box-shadow: 0 0 20px 9px #ff61241f;
+    border-radius: 30px;
+    margin-bottom: 5%;
+    margin-top: -4%;
 }
 
 h1 {

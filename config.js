@@ -1,8 +1,11 @@
-module.exports.BASE_URL = "http://localhost:3000";
-module.exports.ETHEREUM_NODE_ADDRESS = "http://127.0.0.1:7545"
-module.exports.CONTRACT_ADDRESS = "0xa1f8Eb9A79CcB3dc484b3C0555eBd744dc359fAa";
-module.exports.ETHEREUM_ACCOUNT_ADDRESS = "0x8C583C7e1DD0D7e08D5825E10DeE405831B37A28";
-module.exports.PRIVATE_KEY = "8f3b417f5cbda0ef0d7d142a9656003dff3367970b9e6612e953688dc23a483b"
+//Manages the configuration data of the server.
+
+module.exports.BASE_URL = "http://localhost:3000"; //Base url of the server.
+module.exports.ETHEREUM_NODE_ADDRESS = "http://127.0.0.1:7545" //Address of the Ethereum network.
+module.exports.CONTRACT_ADDRESS = "0xa1f8Eb9A79CcB3dc484b3C0555eBd744dc359fAa"; //Contract address after the migration.
+module.exports.ETHEREUM_ACCOUNT_ADDRESS = "0x8C583C7e1DD0D7e08D5825E10DeE405831B37A28"; //Address of the Ethereum account used to initiate the transactions.
+module.exports.PRIVATE_KEY = "8f3b417f5cbda0ef0d7d142a9656003dff3367970b9e6612e953688dc23a483b" //Private key of the Ethereum account.
+//Application binary interface of the deployed Solidity smart contract.
 module.exports.ABI = [
   {
     "inputs": [],

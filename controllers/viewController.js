@@ -4,6 +4,16 @@ const config = require('../config');
 const VerifierService = require('../services/verifierService');
 const UserService = require('../services/userService');
 
+/*
+  ViewController performs the routing and rendering of the web pages.
+ */
+
+
+/*
+  Method for enforing the session management.
+  If the user if not logged in to the platform and attempt to access a retricted
+  page, redirect the user back to the login page.
+ */
 const redirectToLogin = (req, res, next) => {
 
   if (!req.session.isLogged){
@@ -14,6 +24,11 @@ const redirectToLogin = (req, res, next) => {
   }
 }
 
+/*
+  Method for enforing the session management.
+  If the user if  logged in to the platform and attempt to access login page
+  page, redirect the user back to the Home page.
+ */
 const redirectToHome = (req, res, next) => {
 
   if (req.session.isLogged){
@@ -24,22 +39,35 @@ const redirectToHome = (req, res, next) => {
   }
 }
 
+//Render the index page.
 router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
+//Render the sign in page.
 router.get('/signin', redirectToHome, (req, res) => {
   res.render('signin');
 });
 
+//Render the profile page.
 router.get('/profile', redirectToLogin, (req, res) => {
   res.render('profile');
 });
 
+//Render the integrate page.
 router.get('/integrate', (req, res) => {
   res.render('integrate');
 });
 
+/*
+  The CreditX Authenticator can be encoporated by any other platform which wishes to
+  utilize CreditX Authentication Service. In order to do so, they need to expose a rest endpoint which is in turn
+  used for the authentication process. This same approach is followed, when signing in users the CreditX Authenticator
+  for their profile management. Therefore, this endpoint is used for that purpose. Here it takes three input parameters
+  and perform the authentication process. Here even though the VerifierService is imported manually. For third parties
+  encoprating the authentication service, this functionality is provided through a npm package named 'CreditXAuthenticator'.
+  Here depending on the success of the verification process, user is informed and session data is updated.
+ */
 router.get('/verify', (req, res) => {
 
   const username = req.query.username;
@@ -76,6 +104,12 @@ router.get('/verify', (req, res) => {
 
 });
 
+/*
+  This endpoint is used to capture the relavant input prameters and perform the authentication process.
+  As the verification process continues the VerifierService invokes this endpoint with the given parameters to finalize
+  the user authentication process From here authenticateUser method of the UserService is invoked alongside passing the
+  parameters and the status of the user verification is transmitted back to the VerifierService.
+ */
 router.post('/authentication/:id/verify', (req, res) => {
 
   const username = req.body.username;

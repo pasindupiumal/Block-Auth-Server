@@ -10,6 +10,9 @@ const session = require('express-session');
 
 const app = express();
 
+/*
+  Express-Session library is used for the session management of the configuration panel.
+ */
 app.use(session({
   name: 'SID',
   resave: false,
@@ -21,6 +24,10 @@ app.use(session({
   }
 }));
 
+/*
+  MongoDB is used for managing persistent data. Including relevant infomration of the user.
+  By default connects to the connects to the local MongoDB server.
+ */
 mongoose.connect('mongodb://localhost:27017/Block-Auth', {useNewUrlParser:true}).then(() => {
   console.log('\nConneted to the mongo database');
 }).catch(error => {
